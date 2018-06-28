@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">KMovies</string>
+    <integer name="num_columns">2</integer>
+</resources>
