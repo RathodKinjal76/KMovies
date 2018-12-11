@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/review_width"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/dim_8dp"
+    android:padding="@dimen/dim_8dp"
+    >
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="@dimen/dim_72dp"
+        android:layout_height="@dimen/dim_72dp"
+        android:contentDescription="@string/app_name"
+        android:padding="@dimen/dim_8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/red_cine" />
+
+    <TextView
+        android:id="@+id/trailer_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/dim_8dp"
+        android:gravity="center"
+        android:textSize="@dimen/text_14sp" />
+
+</LinearLayout>

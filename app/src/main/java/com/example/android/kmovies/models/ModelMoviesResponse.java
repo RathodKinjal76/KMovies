@@ -1,5 +1,8 @@
-package com.example.android.kmovies;
+package com.example.android.kmovies.models;
 
+import android.graphics.Movie;
+
+import com.example.android.kmovies.utils.Constants;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -9,13 +12,13 @@ import java.util.List;
  */
 
 public class ModelMoviesResponse {
-    @SerializedName("page")
+    @SerializedName(Constants.PAGE)
     private int page;
-    @SerializedName("results")
+
+    @SerializedName(Constants.RESULTS)
     private List<ModelMovies> results;
-    @SerializedName("total_results")
-    private int totalResults;
-    @SerializedName("total_pages")
+
+    @SerializedName(Constants.TOTAL_PAGES)
     private int totalPages;
 
     public int getPage() {
@@ -32,14 +35,6 @@ public class ModelMoviesResponse {
 
     public void setResults(List<ModelMovies> results) {
         this.results = results;
-    }
-
-    public int getTotalResults() {
-        return totalResults;
-    }
-
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
     }
 
     public int getTotalPages() {

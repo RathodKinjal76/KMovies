@@ -2,17 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.kinjal.ohdeals.MainActivity">
+    tools:context="com.example.android.kmovies.ui.MainActivity">
 
     <item
         android:id="@+id/popular_movies"
-        android:title="Popular Movies"
+        android:title="@string/popular_movies"
         android:visible="true"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/top_rated_movies"
-        android:title="Top Rated Movies"
+        android:title="@string/top_tated_movies"
+        android:visible="true"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/favorites_movies"
+        android:title="@string/fav_movies"
         android:visible="true"
         app:showAsAction="withText" />
 

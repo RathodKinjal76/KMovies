@@ -1,4 +1,6 @@
-package com.example.android.kmovies;
+package com.example.android.kmovies.network;
+
+import com.example.android.kmovies.utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -9,14 +11,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieApiClient {
 
-    public static final String BASE_URL = "http://api.themoviedb.org/3/";
-    private static Retrofit retrofit = null;
+    public static Retrofit retrofit = null;
 
-
-    public static Retrofit getClient() {
+    public static Retrofit getClient(String url) {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">KMovies</string>
-    <integer name="num_columns">2</integer>
+    <integer name="num_columns_lanscape">4</integer>
+    <integer name="num_columns_portrait">2</integer>
+
+    <string name="popular_movies">Popular Movies</string>
+    <string name="top_tated_movies">Top Rated Movies</string>
+    <string name="fav_movies">Favorite Movies</string>
+    <string name="check_internet">No Internet</string>
+    <string name="no_fav">No Favorite</string>
+
+    <string name="check_api">Please provide your api key in strings.xml file</string>
+    <string name="no_data">No data</string>
+    <string name="error_in_fetching">Error in fetching</string>
+
+    <string name="release_date">Release date</string>
+    <string name="title">Title</string>
+    <string name="overview">Overview</string>
+    <string name="rating">Rating</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+
+    <string name="author">Author</string>
+    <string name="content">Content</string>
+
+    <string name="removed_fav">Removed favorite</string>
+    <string name="added_fav">Added favorite</string>
+
+    <!-- TODO - insert your themoviedb.org API KEY here -->
+    <string name="api_key">2c33977cd66a8f48ed063fe005a3ffd3</string>
 </resources>

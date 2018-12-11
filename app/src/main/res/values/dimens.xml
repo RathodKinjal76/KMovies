@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="dim_72dp">72dp</dimen>
+    <dimen name="dim_30dp">30dp</dimen>
+    <dimen name="dim_20dp">20dp</dimen>
+    <dimen name="dim_120dp">120dp</dimen>
+    <dimen name="dim_200dp">200dp</dimen>
+    <dimen name="dim_10dp">10dp</dimen>
+    <dimen name="dim_1dp">1dp</dimen>
+    <dimen name="dim_4dp">4dp</dimen>
+    <dimen name="dim_8dp">8dp</dimen>
+    <dimen name="review_width">256dp</dimen>
+
+    <!--Text six-->
+    <dimen name="text_14sp">14sp</dimen>
+    <dimen name="text_16sp">16sp</dimen>
+    <dimen name="text_18sp">18sp</dimen>
+
+</resources>
