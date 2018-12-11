@@ -2,8 +2,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
-    android:layout_width="185dp"
-    android:layout_height="250dp"
+    android:layout_width="@dimen/dim_180dp"
+    android:layout_height="@dimen/dim_250dp"
     android:layout_gravity="center"
     android:orientation="vertical"
     tools:context="com.example.android.kmovies.ui.MainActivity">
@@ -13,25 +13,22 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         card_view:cardBackgroundColor="#F8BBD0"
-        card_view:cardCornerRadius="3dp"
-        card_view:cardElevation="4dp"
+        card_view:cardCornerRadius="@dimen/dim_4dp"
+        card_view:cardElevation="@dimen/dim_4dp"
         card_view:cardUseCompatPadding="true"
         card_view:contentPadding="0dp">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginTop="1dp">
+            android:layout_margin="@dimen/dim_1dp">
 
             <ImageView
                 android:id="@+id/movie_poster"
                 android:contentDescription="@string/app_name"
                 android:transitionName="img"
-                android:layout_width="185dp"
-                android:layout_height="250dp"
+                android:layout_width="@dimen/dim_180dp"
+                android:layout_height="@dimen/dim_250dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/purple_movie" />
@@ -44,9 +41,8 @@
                 android:layout_gravity="center"
                 android:background="#7f686666"
                 android:gravity="center"
-                android:text="Movie Name"
                 android:textColor="@android:color/white"
-                android:textSize="17sp"
+                android:textSize="@dimen/text_18sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>

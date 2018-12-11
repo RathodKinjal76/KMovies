@@ -34,4 +34,7 @@ public class Constants {
     public static final String DATABASE = "movies";
     public static final String TABLE = "movies_table";
     public static final String PARC = "movie";
+
+    public static final String SHARED_PREF_MOVIE_LIST = "movie_list";
+    public static final String SHARED_PREF_MOVIE = "movie";
 }

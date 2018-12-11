@@ -6,6 +6,8 @@
     <dimen name="dim_20dp">20dp</dimen>
     <dimen name="dim_120dp">120dp</dimen>
     <dimen name="dim_200dp">200dp</dimen>
+    <dimen name="dim_250dp">250dp</dimen>
+    <dimen name="dim_180dp">180dp</dimen>
     <dimen name="dim_10dp">10dp</dimen>
     <dimen name="dim_1dp">1dp</dimen>
     <dimen name="dim_4dp">4dp</dimen>
@@ -16,5 +18,13 @@
     <dimen name="text_14sp">14sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
     <dimen name="text_18sp">18sp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_width">250dp</dimen>
+    <dimen name="widget_height">100dp</dimen>
 
 </resources>

@@ -1,5 +1,10 @@
 package com.example.android.kmovies.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -22,6 +27,10 @@ import com.example.android.kmovies.network.MovieApiClient;
 import com.example.android.kmovies.network.MovieApiInterface;
 import com.example.android.kmovies.utils.Constants;
 import com.example.android.kmovies.utils.Utils;
+import com.example.android.kmovies.widget.MovieWidget;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.check_internet)
     TextView textView;
 
-    private ModelMoviesResponse modelMoviesResponse;
+    @BindView(R.id.adView)
+    AdView adView;
+
     private List<ModelMovies> modelMovies;
     private List<ModelMovies> favoriteMovies;
     private MovieAdapter movieAdapter;
@@ -60,9 +71,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        MobileAds.initialize(this, getResources().getString(R.string.admob_app_id));
+
         modelMovies = new ArrayList<>();
         favoriteMovies = new ArrayList<>();
         movieDatabase = MovieDatabase.getInstance(getApplicationContext());
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         if (savedInstanceState != null) {
             modelMovies = savedInstanceState.getParcelableArrayList(DATA_KEY);
@@ -105,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ModelMoviesResponse> call, Response<ModelMoviesResponse> response) {
 
+                        String[] movieName = new String[5];
+
                         if (modelMovies != null)
                             modelMovies.removeAll(modelMovies);
 
@@ -113,8 +131,10 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_data), Toast.LENGTH_SHORT).show();
                         }
+                        for (int i = 0; i < 5; i++)
+                            movieName[i] = modelMovies.get(i).getTitle();
+                        saveDataToSharedPrefs(movieName);
                         movieAdapter.notifyDataSetChanged();
-
                     }
 
                     @Override
@@ -198,5 +218,33 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void saveDataToSharedPrefs(String[] movies) {
+
+        Intent intent = new Intent(getApplicationContext(), MovieWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+        int[] ids = AppWidgetManager.getInstance(getApplicationContext())
+                .getAppWidgetIds(new ComponentName(getApplication(), MovieWidget.class));
+
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        getApplication().sendBroadcast(intent);
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < movies.length; i++) {
+            if (movies[i] != null) {
+                builder.append(i + 1)
+                        .append(". ")
+                        .append(movies[i])
+                        .append("\n");
+            }
+        }
+
+        SharedPreferences sharedPref = getApplication().getSharedPreferences(Constants.SHARED_PREF_MOVIE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.SHARED_PREF_MOVIE_LIST, builder.toString());
+        editor.apply();
     }
 }

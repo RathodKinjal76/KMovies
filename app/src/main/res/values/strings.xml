@@ -28,4 +28,10 @@
 
     <!-- TODO - insert your themoviedb.org API KEY here -->
     <string name="api_key">2c33977cd66a8f48ed063fe005a3ffd3</string>
+
+    <string name="admob_app_id">ca-app-pub-3360109812222062~7900942142</string>
+    <string name="admob_unit_test_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

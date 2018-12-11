@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.android.kmovies.ui.MainActivity">
 
     <android.support.v7.widget.RecyclerView
@@ -18,5 +19,15 @@
         android:text="@string/check_internet"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/text_16sp" />
+
+    <com.google.android.gms.ads.AdView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/adView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/admob_unit_test_id"
+        />
 
 </RelativeLayout>
