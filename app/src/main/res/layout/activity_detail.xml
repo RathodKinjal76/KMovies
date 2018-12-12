@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="@dimen/dim_4dp"
+            android:theme="@style/ToolbarStyle"
+            ads:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
         <ImageView
             android:id="@+id/big_image"
             android:layout_width="match_parent"
+            android:layout_marginTop="?android:attr/actionBarSize"
             android:layout_height="@dimen/dim_200dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -54,15 +65,16 @@
             android:text="@string/release_date"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_18sp" />
+
         <ImageButton
             android:id="@+id/btn_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
             android:layout_below="@id/tv_release_date"
             android:layout_marginStart="@dimen/dim_30dp"
             android:layout_toEndOf="@id/small_image"
-            android:background="@drawable/ic_is_favorite_border"/>
+            android:background="@drawable/ic_is_favorite_border"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:id="@+id/tv_overview"
@@ -71,7 +83,6 @@
             android:layout_below="@+id/tv_release_date"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dim_72dp"
-            android:gravity="center"
             android:padding="@dimen/dim_10dp"
             android:text="@string/overview"
             android:textColor="@android:color/black"
@@ -81,13 +92,13 @@
             android:id="@+id/small_image"
             android:layout_width="@dimen/dim_120dp"
             android:layout_height="@dimen/dim_200dp"
-            android:transitionName="img"
             android:layout_alignParentStart="true"
             android:layout_alignTop="@+id/tv_title"
             android:layout_marginStart="@dimen/dim_10dp"
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
-            android:src="@drawable/pop_movies" />
+            android:src="@drawable/pop_movies"
+            android:transitionName="img" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nested_trailers"
@@ -103,8 +114,8 @@
 
                 <TextView
                     android:id="@+id/lbl_trailers"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/trailers"
                     android:textColor="@color/colorAccent" />
 
@@ -122,8 +133,8 @@
 
                 <TextView
                     android:id="@+id/lbl_reviews"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/reviews"
                     android:textColor="@color/colorAccent" />
 

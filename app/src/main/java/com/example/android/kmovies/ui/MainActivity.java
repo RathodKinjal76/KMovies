@@ -1,16 +1,21 @@
 package com.example.android.kmovies.ui;
 
 import android.appwidget.AppWidgetManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +24,7 @@ import android.widget.Toast;
 
 import com.example.android.kmovies.R;
 import com.example.android.kmovies.adapters.MovieAdapter;
-import com.example.android.kmovies.data.AppExecutors;
-import com.example.android.kmovies.data.MovieDatabase;
+import com.example.android.kmovies.data.MovieViewModel;
 import com.example.android.kmovies.models.ModelMovies;
 import com.example.android.kmovies.models.ModelMoviesResponse;
 import com.example.android.kmovies.network.MovieApiClient;
@@ -58,24 +62,24 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView adView;
 
+    @BindView(R.id.main_toolbar)
+    Toolbar toolbar;
+
     private List<ModelMovies> modelMovies;
-    private List<ModelMovies> favoriteMovies;
     private MovieAdapter movieAdapter;
     private Parcelable listState;
-    private MovieDatabase movieDatabase;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         MobileAds.initialize(this, getResources().getString(R.string.admob_app_id));
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
 
         modelMovies = new ArrayList<>();
-        favoriteMovies = new ArrayList<>();
-        movieDatabase = MovieDatabase.getInstance(getApplicationContext());
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
@@ -149,31 +153,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     void favoriteMovies() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        MovieViewModel viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        viewModel.getModelMoviesList().observe(this, new Observer<List<ModelMovies>>() {
             @Override
-            public void run() {
-                favoriteMovies = movieDatabase.movieDao().getAllMovies();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (modelMovies.size() > 0) {
-                            modelMovies.clear();
-                        }
-                        modelMovies.addAll(favoriteMovies);
-                        if (modelMovies.size() > 0) {
-                            textView.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                        } else {
-                            textView.setText(getResources().getString(R.string.no_fav));
-                            textView.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.GONE);
-                        }
-                        movieAdapter.notifyDataSetChanged();
-                    }
-                });
+            public void onChanged(@Nullable List<ModelMovies> movies) {
+                if (modelMovies.size() > 0) {
+                    modelMovies.clear();
+                }
+                modelMovies.addAll(movies);
+                if (modelMovies.size() > 0) {
+                    textView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    textView.setText(getResources().getString(R.string.no_fav));
+                    textView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+                movieAdapter.notifyDataSetChanged();
             }
         });
     }
+
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
@@ -230,21 +230,28 @@ public class MainActivity extends AppCompatActivity {
 
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         getApplication().sendBroadcast(intent);
+        new MoviesAsyncTask().execute(movies);
+    }
 
-        StringBuilder builder = new StringBuilder();
+    private class MoviesAsyncTask extends AsyncTask<String[], Void, Void> {
+        @Override
+        protected Void doInBackground(String[]... strings) {
+            StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < movies.length; i++) {
-            if (movies[i] != null) {
-                builder.append(i + 1)
-                        .append(". ")
-                        .append(movies[i])
-                        .append("\n");
+            for (int i = 0; i < strings.length; i++) {
+                if (strings[i] != null) {
+                    builder.append(i + 1)
+                            .append(". ")
+                            .append(strings[i])
+                            .append("\n");
+                }
             }
-        }
 
-        SharedPreferences sharedPref = getApplication().getSharedPreferences(Constants.SHARED_PREF_MOVIE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(Constants.SHARED_PREF_MOVIE_LIST, builder.toString());
-        editor.apply();
+            SharedPreferences sharedPref = getApplication().getSharedPreferences(Constants.SHARED_PREF_MOVIE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(Constants.SHARED_PREF_MOVIE_LIST, builder.toString());
+            editor.apply();
+            return null;
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import com.example.android.kmovies.network.MovieApiClient;
 import com.example.android.kmovies.network.MovieApiInterface;
 import com.example.android.kmovies.utils.Constants;
 import com.example.android.kmovies.utils.Utils;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -57,14 +59,15 @@ public class DetailActivity extends AppCompatActivity {
     RecyclerView recyclerViewTrailers;
     @BindView(R.id.btn_favorite)
     ImageButton favoriteButton;
+    @BindView(R.id.detail_toolbar)
+    Toolbar toolbar;
 
     private List<ModelReviews> modelReviews;
     private ReviewAdapter reviewAdapter;
     private List<ModelTrailers> modelTrailers;
     private TrailerAdapter trailerAdapter;
 
-    private ModelReviewsResponse modelReviewsResponse;
-    private ModelTrailersResponse modelTrailersResponse;
+    private FirebaseAnalytics firebaseAnalytics;
 
     private MovieDatabase movieDatabase;
     private ModelMovies favoriteMovie, tappedMovie;
@@ -79,8 +82,12 @@ public class DetailActivity extends AppCompatActivity {
         modelTrailers = new ArrayList<>();
         modelReviews = new ArrayList<>();
 
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         movieDatabase = MovieDatabase.getInstance(getApplicationContext());
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         //Setup movie data
         Intent intent = getIntent();
         if (intent != null) {
@@ -129,10 +136,22 @@ public class DetailActivity extends AppCompatActivity {
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recordFavoriteButtonActivity();
                 favoriteTapped();
             }
         });
 
+    }
+
+    void recordFavoriteButtonActivity() {
+        String movieId = tappedMovie.getId();
+        String movieName = tappedMovie.getTitle();
+        Bundle bundle = new Bundle();
+
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, movieId);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, movieName);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "movie");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     private void checkFavorite() {
@@ -205,14 +224,13 @@ public class DetailActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ModelReviewsResponse>() {
                     @Override
                     public void onResponse(Call<ModelReviewsResponse> call, Response<ModelReviewsResponse> response) {
-                        modelReviewsResponse = response.body();
 
                         if (modelReviews != null) {
                             modelReviews.removeAll(modelReviews);
                         }
 
-                        if (modelReviewsResponse != null) {
-                            modelReviews.addAll(modelReviewsResponse.getResults());
+                        if (response.body().getResults() != null) {
+                            modelReviews.addAll(response.body().getResults());
                         } else {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_data), Toast.LENGTH_SHORT).show();
                         }
@@ -241,14 +259,13 @@ public class DetailActivity extends AppCompatActivity {
                 call.enqueue(new Callback<ModelTrailersResponse>() {
                     @Override
                     public void onResponse(Call<ModelTrailersResponse> call, Response<ModelTrailersResponse> response) {
-                        modelTrailersResponse = response.body();
 
                         if (modelTrailers != null) {
                             modelTrailers.removeAll(modelTrailers);
                         }
 
-                        if (modelTrailersResponse != null) {
-                            modelTrailers.addAll(modelTrailersResponse.getYoutube());
+                        if (response.body().getYoutube() != null) {
+                            modelTrailers.addAll(response.body().getYoutube());
                         } else {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_data), Toast.LENGTH_SHORT).show();
                         }

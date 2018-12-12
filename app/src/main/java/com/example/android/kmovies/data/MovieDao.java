@@ -1,5 +1,6 @@
 package com.example.android.kmovies.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -15,7 +16,7 @@ public interface MovieDao {
     void insert(ModelMovies modelMovies);
 
     @Query("SELECT * FROM movies_table")
-    List<ModelMovies> getAllMovies();
+    LiveData<List<ModelMovies>> getAllMovies();
 
     @Query("DELETE FROM movies_table WHERE id= :movie_id")
     void deleteMovieWithId(String movie_id);
